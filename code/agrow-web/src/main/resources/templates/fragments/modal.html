@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+
+<html xmlns:th="https://www.thymeleaf.org">
+
+	<body>
+	    <div th:fragment="logoutModal" class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="logoutModalLabel"
+	        aria-hidden="true">
+	        <div class="modal-dialog" role="document">
+	            <div class="modal-content">
+	                <div class="modal-header">
+	                    <h5 class="modal-title" id="logoutModalLabel">Pronto para sair?</h5>
+	                    <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+	                        <span aria-hidden="true">x</span>
+	                    </button>
+	                </div>
+	                <div class="modal-body">Selecione "Sair" abaixo se voc&ecirc; est&aacute; pronto para encerrar sua sess&atilde;o atual.</div>
+	                <div class="modal-footer">
+	                	<form th:action="@{/logout}" method="post">
+		                    <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancelar</button>
+		                    <button type="submit" class="btn btn-primary">Sair</button>
+	                    </form>
+	                </div>
+	            </div>
+	        </div>
+	    </div>
+
+		<div th:fragment="deleteModal" class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel"
+	        aria-hidden="true">
+	        <div class="modal-dialog" role="document">
+	            <div class="modal-content">
+	                <div class="modal-header">
+	                    <h5 class="modal-title" id="deleteModalLabel">Pronto para excluir?</h5>
+	                    <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+	                        <span aria-hidden="true">x</span>
+	                    </button>
+	                </div>
+	                <div class="modal-body">Selecione "Sim" abaixo se voc&ecirc; confirma a exclus&atilde;o do registro.</div>
+	                <div class="modal-footer">
+	                	<input id="inputHiddenDeleteModal" type="hidden" value="" />
+	                    <button class="btn btn-secondary" type="button" data-dismiss="modal">N&atilde;o</button>
+	                    <button class="btn btn-primary" onclick="document.getElementById('btnSubmit' + document.getElementById('inputHiddenDeleteModal').value).click()">Sim</button>
+	                </div>
+	            </div>
+	        </div>
+	        <script th:inline="javascript">
+				function setIdToDelete(value) {
+					document.getElementById("inputHiddenDeleteModal").value = value;
+				}
+			</script>
+	    </div>
+	</body>
+</html>
