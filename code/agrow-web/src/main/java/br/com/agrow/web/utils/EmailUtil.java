@@ -10,7 +10,7 @@ import br.com.agrow.web.model.User;
 @Component
 public class EmailUtil {
 
-	private final String contextPath = "http://localhost:8081";
+	private final String contextPath = "http://localhost:8080";
 
 	public EmailSendingRequest loadEmailSendingRequest(User user) {
 		StringBuilder message = new StringBuilder();

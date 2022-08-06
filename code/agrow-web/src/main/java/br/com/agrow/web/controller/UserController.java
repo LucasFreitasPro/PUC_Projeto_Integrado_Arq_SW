@@ -35,9 +35,9 @@ public class UserController {
 
 	private final Logger logger = LoggerFactory.getLogger(getClass());
 
-	private final String USER_LIST = "/user/list";
-	private final String USER_FORM = "/user/form";
-	private final String USER_REGISTER = "/user/register";
+	private final String USER_LIST = "user/list";
+	private final String USER_FORM = "user/form";
+	private final String USER_REGISTER = "user/register";
 	private final String REDIRECT_USERS = "redirect:/users/";
 
 	private final EmailUtil emailUtil;

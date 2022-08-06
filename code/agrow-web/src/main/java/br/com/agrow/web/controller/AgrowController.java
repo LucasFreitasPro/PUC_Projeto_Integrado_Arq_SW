@@ -31,6 +31,6 @@ public class AgrowController {
 		User user = this.userService.findByUsername(username).get();
 		httpSession.setAttribute("isUserLogged", true);
 		httpSession.setAttribute("loggedUser", user.getFirstName() + " " + user.getLastName());
-		return "/home";
+		return "home";
 	}
 }

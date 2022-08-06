@@ -72,4 +72,9 @@ public class Role implements GrantedAuthority {
 		Role other = (Role) obj;
 		return Objects.equals(roleName, other.roleName);
 	}
+
+	@Override
+	public String toString() {
+		return "Role [roleName=" + roleName + "]";
+	}
 }
