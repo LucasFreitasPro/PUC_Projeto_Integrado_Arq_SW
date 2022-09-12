@@ -21,6 +21,11 @@
 
 	<dependencies>
 		<dependency>
+			<groupId>br.com.agrow.web</groupId>
+			<artifactId>agrow-lib</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
+		</dependency>
+		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-thymeleaf</artifactId>
 		</dependency>
