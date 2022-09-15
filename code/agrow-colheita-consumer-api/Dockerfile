@@ -1,0 +1,3 @@
+FROM openjdk:11
+ADD target/agrow-colheita-consumer-api-0.0.1-SNAPSHOT.jar agrow-colheita-consumer-api.jar
+ENTRYPOINT [ "java", "-jar", "agrow-colheita-consumer-api.jar" ]

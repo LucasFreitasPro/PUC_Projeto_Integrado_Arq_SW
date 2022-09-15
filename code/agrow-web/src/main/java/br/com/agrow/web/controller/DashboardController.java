@@ -22,8 +22,10 @@ import org.springframework.web.client.RestTemplate;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.web.util.UriComponentsBuilder;
 
+import br.com.agrow.web.lib.dto.ColheitaTalhaoResponse;
 import br.com.agrow.web.lib.dto.CurvaLactacaoResponse;
 import br.com.agrow.web.lib.dto.DashboardSharingRequest;
+import br.com.agrow.web.lib.dto.ItemColheitaTalhaoResponse;
 import br.com.agrow.web.lib.dto.ItemCurvaLactacaoResponse;
 import br.com.agrow.web.lib.dto.ItemSoloResponse;
 import br.com.agrow.web.lib.dto.QualidadeSoloResponse;
@@ -44,14 +46,14 @@ public class DashboardController {
 	private final SimpleDateFormat sdfAnoMes = new SimpleDateFormat("yyyy-MM");
 	private final SimpleDateFormat sdfMesAno = new SimpleDateFormat("MM/yyyy");
 
-	@Value("${url.rebanho.api}")
+	@Value("${url.lactacao.consumer.api}")
 	private String URL_REBANHO_API;
 
-	@Value("${url.solo.api}")
+	@Value("${url.drones.consumer.api}")
 	private String URL_SOLO_API;
 
-	@Value("${url.rebanho.api}")
-	private String URL_GRAFICO3_API;
+	@Value("${url.colheita.talhao.api}")
+	private String URL_COLHEITAS_API;
 
 	@Value("${url.compartilhamento.api}")
 	private String URL_COMPARTILHAMENTO_API;
@@ -84,7 +86,7 @@ public class DashboardController {
 			UriComponentsBuilder builderLactacao = UriComponentsBuilder.fromUriString(URL_REBANHO_API).pathSegment("graficos", "curva-lactacao", mesAno);
 			curvaLactacaoResponse = restTemplate.getForObject(builderLactacao.build().toUri(), CurvaLactacaoResponse.class);
 		} catch (Exception e) {
-			curvaLactacaoResponse = new CurvaLactacaoResponse(new ArrayList<ItemCurvaLactacaoResponse>());
+			curvaLactacaoResponse = new CurvaLactacaoResponse();
 			carregarValoresPadraoCurvaLactacao(curvaLactacaoResponse);
 			logger.error("Falha ao buscar os dados da Curva de Lactação", e);
 		}
@@ -96,14 +98,25 @@ public class DashboardController {
 			UriComponentsBuilder builderSolo = UriComponentsBuilder.fromUriString(URL_SOLO_API).pathSegment("solos", "graficos", "qualidade-solo", mesAno);
 			qualidadeSoloResponse = restTemplate.getForObject(builderSolo.build().toUri(), QualidadeSoloResponse.class);
 		} catch (Exception e) {
-			qualidadeSoloResponse = new QualidadeSoloResponse(new ArrayList<>());
+			qualidadeSoloResponse = new QualidadeSoloResponse();
 			carregarValoresPadraoQualidadeSolo(qualidadeSoloResponse);
 			logger.error("Falha ao buscar os dados da Qualidade do Solo", e);
 		}
 		model.addAttribute("chartBarData", qualidadeSoloResponse.getItens().stream().map(i -> i.getPercentual()).collect(Collectors.toList()));
 		model.addAttribute("chartBarLabel", qualidadeSoloResponse.getItens().stream().map(i -> i.getLabel()).collect(Collectors.toList()));
 
-		model.addAttribute("chartPieData", new int[] { 1, 324, 565, 5678 });
+		ColheitaTalhaoResponse colheitaTalhaoResponse = null;
+		try {
+			UriComponentsBuilder builderColheita = UriComponentsBuilder.fromUriString(URL_COLHEITAS_API).pathSegment("colheitas", "por-talhao", mesAno);
+			colheitaTalhaoResponse = this.restTemplate.getForObject(builderColheita.build().toUri(), ColheitaTalhaoResponse.class);
+		} catch (Exception e) {
+			colheitaTalhaoResponse = new ColheitaTalhaoResponse();
+			carregarValoresPadraoColheitas(colheitaTalhaoResponse);
+			logger.error("Falha ao buscar os dados da Colheita", e);
+		}
+		List<Double> datas = colheitaTalhaoResponse.getItens().stream().map(c -> c.getQuantidade()).collect(Collectors.toList());
+		model.addAttribute("chartBar2Data", datas);
+		model.addAttribute("chartBar2Label", colheitaTalhaoResponse.getItens().stream().map(c -> c.getLabel()).collect(Collectors.toList()));
 
 		model.addAttribute("users", this.userService.findAll());
 		model.addAttribute("sharingRequest", new DashboardSharingRequest(new ArrayList<UUID>()));
@@ -137,27 +150,37 @@ public class DashboardController {
 	}
 
 	private void carregarValoresPadraoCurvaLactacao(CurvaLactacaoResponse curvaLactacaoResponse) {
-		List<ItemCurvaLactacaoResponse> itens = new ArrayList<ItemCurvaLactacaoResponse>();
-		itens.add(new ItemCurvaLactacaoResponse(0, "0 dias"));
-		itens.add(new ItemCurvaLactacaoResponse(20, "30 dias"));
-		itens.add(new ItemCurvaLactacaoResponse(40, "60 dias"));
-		itens.add(new ItemCurvaLactacaoResponse(60, "90 dias"));
-		itens.add(new ItemCurvaLactacaoResponse(80, "120 dias"));
-		itens.add(new ItemCurvaLactacaoResponse(100, "150 dias"));
-		itens.add(new ItemCurvaLactacaoResponse(60, "180 dias"));
-		itens.add(new ItemCurvaLactacaoResponse(40, "210 dias"));
-		itens.add(new ItemCurvaLactacaoResponse(80, "240 dias"));
-		itens.add(new ItemCurvaLactacaoResponse(120, "270 dias"));
-		itens.add(new ItemCurvaLactacaoResponse(120, "300 dias"));
-		itens.add(new ItemCurvaLactacaoResponse(90, "330 dias"));
+		List<ItemCurvaLactacaoResponse> itens = List.of(
+				new ItemCurvaLactacaoResponse(0, "0 dias"),
+				new ItemCurvaLactacaoResponse(20, "30 dias"),
+				new ItemCurvaLactacaoResponse(40, "60 dias"),
+				new ItemCurvaLactacaoResponse(60, "90 dias"),
+				new ItemCurvaLactacaoResponse(80, "120 dias"),
+				new ItemCurvaLactacaoResponse(100, "150 dias"),
+				new ItemCurvaLactacaoResponse(60, "180 dias"),
+				new ItemCurvaLactacaoResponse(40, "210 dias"),
+				new ItemCurvaLactacaoResponse(80, "240 dias"),
+				new ItemCurvaLactacaoResponse(120, "270 dias"),
+				new ItemCurvaLactacaoResponse(120, "300 dias"),
+				new ItemCurvaLactacaoResponse(90, "330 dias"));
 		curvaLactacaoResponse.setItens(itens);
 	}
 
 	private void carregarValoresPadraoQualidadeSolo(QualidadeSoloResponse qualidadeSoloResponse) {
-		List<ItemSoloResponse> itens = new ArrayList<ItemSoloResponse>();
-		itens.add(new ItemSoloResponse(50.0, "PLANTIO DO SOLO"));
-		itens.add(new ItemSoloResponse(20.0, "ROTAÇÃO DO SOLO"));
-		itens.add(new ItemSoloResponse(30.0, "COBERTURA VERDE"));
+		List<ItemSoloResponse> itens = List.of(
+				new ItemSoloResponse(50.0, "PLANTIO DO SOLO"),
+				new ItemSoloResponse(20.0, "ROTAÇÃO DO SOLO"),
+				new ItemSoloResponse(30.0, "COBERTURA VERDE"));
 		qualidadeSoloResponse.setItens(itens);
+	}
+
+	private void carregarValoresPadraoColheitas(ColheitaTalhaoResponse colheitaTalhaoResponse) {
+		List<ItemColheitaTalhaoResponse> itens = List.of(
+				new ItemColheitaTalhaoResponse(10D, "Café"),
+				new ItemColheitaTalhaoResponse(8D, "Soja"),
+				new ItemColheitaTalhaoResponse(5D, "Milho"),
+				new ItemColheitaTalhaoResponse(7D, "Soho"),
+				new ItemColheitaTalhaoResponse(3D, "Hortaliças"));
+		colheitaTalhaoResponse.setItens(itens);
 	}
 }

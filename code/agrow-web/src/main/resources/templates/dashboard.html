@@ -94,7 +94,7 @@
 	                            <!-- Area Chart -->
 	                            <div class="card shadow mb-4">
 	                                <div class="card-header py-3">
-	                                    <h6 class="m-0 font-weight-bold text-primary">Curva de Lacta&ccedil;&atilde;o - Produ&ccedil;&atilde;o de Leite X Dias Em Lacta&ccedil;&atilde;o</h6>
+	                                    <h6 class="m-0 font-weight-bold">Curva de Lacta&ccedil;&atilde;o - Produ&ccedil;&atilde;o de Leite X Dias Em Lacta&ccedil;&atilde;o</h6>
 	                                </div>
 	                                <div class="card-body">
 	                                    <div class="chart-area">
@@ -106,7 +106,7 @@
 	                            <!-- Bar Chart -->
 	                            <div class="card shadow mb-4">
 	                                <div class="card-header py-3">
-	                                    <h6 class="m-0 font-weight-bold text-primary">Conserva&ccedil;&atilde;o do Solo</h6>
+	                                    <h6 class="m-0 font-weight-bold">Conserva&ccedil;&atilde;o do Solo</h6>
 	                                </div>
 	                                <div class="card-body">
 	                                    <div class="chart-bar">
@@ -119,14 +119,12 @@
 	                        <!-- Donut Chart -->
 	                        <div class="col-xl-4 col-lg-5">
 	                            <div class="card shadow mb-4">
-	                                <!-- Card Header - Dropdown -->
 	                                <div class="card-header py-3">
-	                                    <h6 class="m-0 font-weight-bold text-primary">Donut Chart</h6>
+	                                    <h6 class="m-0 font-weight-bold">Colheitas - Produção (Kg) por Talh&atilde;o</h6>
 	                                </div>
-	                                <!-- Card Body -->
 	                                <div class="card-body">
-	                                    <div class="chart-pie pt-4">
-	                                        <canvas id="myPieChart"></canvas>
+	                                    <div class="chart-bar">
+	                                        <canvas id="myBarChart2"></canvas>
 	                                    </div>
 	                                </div>
 	                            </div>
@@ -188,19 +186,19 @@
 				return [[${chartBarLabel}]];
 			}
 
-			function getChartPieData() {
-				return [[${chartPieData}]];
+			function getChartBar2Data() {
+				return [[${chartBar2Data}]];
 			}
-			function getChartPieLabel() {
-				return [[${chartPieLabel}]];
+			function getChartBar2Label() {
+				return [[${chartBar2Label}]];
 			}
 			//]]
 		</script>
 
 	    <!-- Page level custom scripts -->
 	    <script th:src="@{/js/demo/chart-area-demo.js}"></script>
-	    <script th:src="@{/js/demo/chart-pie-demo.js}"></script>
 	    <script th:src="@{/js/demo/chart-bar-demo.js}"></script>
+	    <script th:src="@{/js/demo/chart-bar2-demo.js}"></script>
 	    <script th:src="@{/js/jsPDF-1.5.3.js}"></script>
 	    <script th:src="@{/js/dashboard.js}"></script>
 	</body>

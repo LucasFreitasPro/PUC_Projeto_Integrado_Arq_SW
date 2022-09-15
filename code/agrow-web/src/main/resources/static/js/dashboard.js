@@ -6,7 +6,7 @@ function gerarPDF() {
 	let image2 = new Image();
 	image2.src = document.getElementById("myBarChart").toDataURL('image/png', 1.0);
 	let image3 = new Image();
-	image3.src = document.getElementById("myPieChart").toDataURL('image/png', 1.0);
+	image3.src = document.getElementById("myBarChart2").toDataURL('image/png', 1.0);
 
 	var doc = new jsPDF();
 	doc.setFillColor(28, 200, 138);
@@ -29,8 +29,8 @@ function gerarPDF() {
 	doc.addImage(image1, 'PNG', 20, 30, 172.8, 64, 'curva_lactacao', 'NONE', 0);
 	doc.text("Conservação do Solo", 80, 106);
 	doc.addImage(image2, 'PNG', 20, 115, 172.8, 64, 'solo', 'NONE', 0);
-	doc.text("Gráfico 3", 90, 195);
-	doc.addImage(image3, 'PNG', 20, 205, 162, 84, 'pie', 'NONE', 0);
+	doc.text("Colheitas - Produção (Kg) por Talhão", 70, 195);
+	doc.addImage(image3, 'PNG', 20, 205, 172, 75, 'pie', 'NONE', 0);
 
 	let arrMesAno = mesAno.split("/");
 	doc.save('Agrow Web-Dashboard-' + arrMesAno[1] + "-" + arrMesAno[0] + '.pdf');

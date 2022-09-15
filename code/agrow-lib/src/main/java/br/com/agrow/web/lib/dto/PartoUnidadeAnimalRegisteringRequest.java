@@ -6,6 +6,8 @@ import javax.validation.constraints.NotNull;
 
 public class PartoUnidadeAnimalRegisteringRequest {
 
+	private String idUnidadeAnimal;
+
 	@NotNull
 	private LocalDate dataParto;
 
@@ -15,5 +17,13 @@ public class PartoUnidadeAnimalRegisteringRequest {
 
 	public void setDataParto(LocalDate dataParto) {
 		this.dataParto = dataParto;
+	}
+
+	public String getIdUnidadeAnimal() {
+		return idUnidadeAnimal;
+	}
+
+	public void setIdUnidadeAnimal(String idUnidadeAnimal) {
+		this.idUnidadeAnimal = idUnidadeAnimal;
 	}
 }

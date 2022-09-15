@@ -31,4 +31,9 @@ public class ItemCurvaLactacaoResponse {
 	public void setDiasEmLactação(String diasEmLactação) {
 		this.diasEmLactação = diasEmLactação;
 	}
+
+	@Override
+	public String toString() {
+		return "ItemCurvaLactacaoResponse [quantidade=" + quantidade + ", diasEmLactação=" + diasEmLactação + "]";
+	}
 }
