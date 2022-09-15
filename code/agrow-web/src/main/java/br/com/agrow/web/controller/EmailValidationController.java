@@ -55,6 +55,6 @@ public class EmailValidationController {
 			logger.warn("O código de verificação informado não existe: " + key);
 		}
 
-		return "/email/validation-result";
+		return "email/validation-result";
 	}
 }

@@ -26,11 +26,11 @@ public class AgrowController {
 
 	@GetMapping("/index")
 	public String index(@CurrentSecurityContext(expression = "authentication.name") String username, HttpSession httpSession) {
-		logger.info("Login realizado com sucesso. Usuario: " + username);
+		logger.info("Login realizado com sucesso. Usuário: " + username);
 
 		User user = this.userService.findByUsername(username).get();
 		httpSession.setAttribute("isUserLogged", true);
 		httpSession.setAttribute("loggedUser", user.getFirstName() + " " + user.getLastName());
-		return "/home";
+		return "home";
 	}
 }

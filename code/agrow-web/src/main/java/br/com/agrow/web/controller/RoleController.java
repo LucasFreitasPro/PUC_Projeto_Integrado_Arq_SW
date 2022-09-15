@@ -26,8 +26,8 @@ public class RoleController {
 
 	private final Logger logger = LoggerFactory.getLogger(getClass());
 
-	private final String ROLE_LIST = "/role/list";
-	private final String ROLE_FORM = "/role/form";
+	private final String ROLE_LIST = "role/list";
+	private final String ROLE_FORM = "role/form";
 	private final String REDIRECT_ROLES = "redirect:/roles/";
 
 	private final RoleService roleService;

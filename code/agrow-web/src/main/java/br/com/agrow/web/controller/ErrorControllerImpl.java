@@ -35,6 +35,6 @@ public class ErrorControllerImpl implements ErrorController {
 				model.addAttribute("msg", "Caso o mesmo persista entre em contato com a Equipe Agrow.");
 			}
 		}
-		return "/error/general";
+		return "error/general";
 	}
 }

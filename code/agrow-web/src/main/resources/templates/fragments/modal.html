@@ -24,6 +24,34 @@
 	        </div>
 	    </div>
 
+	    <div th:fragment="shareModal" class="modal fade" id="shareModal" tabindex="-1" role="dialog" aria-labelledby="shareModalLabel"
+	        aria-hidden="true">
+	        <div class="modal-dialog" role="document">
+				<form th:action="@{/dashboards/share}" th:object="${sharingRequest}" method="post">
+					<input type="hidden" name="mesAno" th:value="${mesAno}" />
+		            <div class="modal-content">
+		                <div class="modal-header">
+		                    <h5 class="modal-title" id="shareModalLabel">Compartilhamento do Dashboard</h5>
+		                    <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+		                        <span aria-hidden="true">x</span>
+		                    </button>
+		                </div>
+		                <div class="modal-body">
+		                	<span>Escolha os usu&aacute;rios e em seguida selecione "Compartilhar" abaixo</span>
+		                	<br>
+		                	<select class="form-control" multiple="multiple" th:field="*{usersId}">
+		                		<option th:each="user : ${users}" th:value="${user.userId}" th:text="${user.firstName + ' ' + user.lastName}"></option>
+		                	</select>
+		                </div>
+		                <div class="modal-footer">
+		                    <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancelar</button>
+		                    <button type="submit" class="btn btn-primary">Compartilhar</button>
+		                </div>
+		            </div>
+				</form>
+	        </div>
+	    </div>
+
 		<div th:fragment="deleteModal" class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel"
 	        aria-hidden="true">
 	        <div class="modal-dialog" role="document">
