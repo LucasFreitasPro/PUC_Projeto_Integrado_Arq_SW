@@ -16,4 +16,5 @@ Decidimos implementar o RabbitMQ para promover esse controle de transmissão, e 
 
 As consequencias envolvem obter melhor desempenho no processamento dos dados coletados, sem que haja gargalos e/ou perda de dados, que são utilizados para após processamento, fornecerem insumos estatísticos e gerarem inteligência para uma melhor tomada de decisão.
 Além disso, é auto-escalável, podendo inclusive trazer economia com a tecnologia implementada.
+
 Um ponto a se destacar é a complexidade envolvida nessa inplementação, que aumenta e exige um time mais experiente.

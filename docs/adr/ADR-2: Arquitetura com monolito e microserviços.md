@@ -15,4 +15,10 @@ A aplicação que o usuário acessa pode ser uma aplicação única de plataform
 
 ## Consequences
 
-As consequências envolvem a necessidade de um time de tecnologia com elevado grau de maturidade para trabalhar com uma arquitetura híbrida, pois a complexidade aumenta bastante. Em contra-partida, consegue-se um alto desempenho, alta disponibilidade e alta escalabilidade das partes do sistema, individualmente.
+As consequências envolvem a necessidade de um time de tecnologia com elevado grau de maturidade para trabalhar com uma arquitetura híbrida, pois a complexidade aumenta bastante.
+
+Também passa a ser um desafio maior questões de observabilidade e monitoramento, bem como a análise logs.
+
+A complexidade da implantação, e a implementação de uma esteira de ci-cd, bem como a imlpementação e realização de testes de integração e de testes end-to-end podem se tornar bem mais difíceis.
+
+Em contra-partida, consegue-se um alto desempenho, resiliência, alta disponibilidade e alta escalabilidade da solução, podendo ser tratadas individualmente as partes do sistema.

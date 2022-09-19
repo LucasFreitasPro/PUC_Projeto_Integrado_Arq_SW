@@ -1,0 +1,239 @@
+version: '3.7'
+services:
+  mongodb:
+    image: mongo
+    container_name: mongodb-agrow
+    restart: always
+    tty: true
+    # volumes: 
+      # - ./db/mongo-script-init.js:/docker-entrypoint-initdb.d/mongo-script-init.js:ro
+      # - /var/www/html/adm/database-servers/mongo:/data/db
+    environment: 
+      - MONGO_INITDB_ROOT_USERNAME:"${MONGO_USER}"
+      - MONGO_INITDB_ROOT_PASSWORD:"${MONGO_PASS}"
+      - MONGO_INITDB_DATABASE:"${MONGO_DATABASE_NAME}"
+    networks:
+      - agrow-network
+    ports:
+      - "27017:27017"
+
+  postgresdb:
+    image: postgres
+    container_name: postgresql-agrow
+    restart: unless-stopped
+    tty: true
+    environment: 
+      - POSTGRES_USER=${PG_USER}
+      - POSTGRES_PASSWORD=${PG_PASS}
+      - POSTGRES_HOST_AUTH_METHOD=${PG_HOST_AUTH_METHOD}
+      - PGDATA=${PG_DATA}
+    volumes: 
+    #   - /var/www/html/adm/database-servers/postgres/db:${PG_DATA}
+    # - ./db/postgres_script_init.sql:/docker-entrypoint-initdb.d/postgres-script-init.sql
+    networks:
+      - agrow-network
+    ports:
+      - "5432:5432"
+
+  rabbitmq:
+    image: "rabbitmq:3-management"
+    container_name: rabbitmq-agrow
+    # environment:
+      # RABBITMQ_CONFIG_FILE: "${RABBITMQ_CONFIG_FILE}"
+      # RABBITMQ_ERLANG_COOKIE: "${RABBITMQ_ERLANG_COOKIE}"
+    networks:
+      - agrow-network
+    restart: unless-stopped
+    ports:
+      - "15672:15672"
+      - "5672:5672"
+
+  microservice-agrow-compartilhamento:
+    build:
+      context: ./code/agrow-compartilhamento-api
+      dockerfile: Dockerfile
+    image: weslleylage/microservice-agrow-compartilhamento
+    container_name: microservice-agrow-compartilhamento
+    tty: true
+    environment:
+      - MONGO_URL_CONNECTION: ${MONGO_URL_CONNECTION}
+      - MONGO_DATABASE_NAME: ${MONGO_DATABASE_NAME}
+    networks:
+      - agrow-network
+    restart: unless-stopped
+    ports:
+      - "8081:80"
+    depends_on:
+      - mongodb
+
+  microservice-agrow-colheita-consumer:
+    build:
+      context: ./code/agrow-colheita-consumer-api
+      dockerfile: Dockerfile
+    image: weslleylage/microservice-agrow-colheita-consumer
+    container_name: microservice-agrow-colheita-consumer
+    tty: true
+    environment:
+      - RABBITMQ_HOST: ${RABBITMQ_HOST}
+      - RABBITMQ_PORT: ${RABBITMQ_PORT}
+      - RABBITMQ_USER: ${RABBITMQ_USER}
+      - RABBITMQ_PASS: ${RABBITMQ_PASS}
+      - MONGO_URL_CONNECTION: ${MONGO_URL_CONNECTION}
+      - MONGO_DATABASE_NAME: ${MONGO_DATABASE_NAME}
+    networks:
+      - agrow-network
+    restart: unless-stopped
+    ports:
+      - "8082:80"
+    depends_on:
+      - rabbitmq
+      - mongodb
+  
+  microservice-agrow-colheita-producer:
+    build:
+      context: ./code/agrow-colheita-producer-api
+      dockerfile: Dockerfile
+    image: weslleylage/microservice-agrow-colheita-producer
+    container_name: microservice-agrow-colheita-producer
+    tty: true
+    environment:
+      - RABBITMQ_HOST: ${RABBITMQ_HOST}
+      - RABBITMQ_PORT: ${RABBITMQ_PORT}
+      - RABBITMQ_USER: ${RABBITMQ_USER}
+      - RABBITMQ_PASS: ${RABBITMQ_PASS}
+    networks:
+      - agrow-network
+    restart: unless-stopped
+    ports:
+      - "8083:80"
+    depends_on:
+      - rabbitmq
+  
+  microservice-agrow-drones-consumer:
+    build:
+      context: ./code/agrow-drones-consumer-api
+      dockerfile: Dockerfile
+    image: weslleylage/microservice-agrow-drones-consumer
+    container_name: microservice-agrow-drones-consumer
+    tty: true
+    environment:
+      - RABBITMQ_HOST: ${RABBITMQ_HOST}
+      - RABBITMQ_PORT: ${RABBITMQ_PORT}
+      - RABBITMQ_USER: ${RABBITMQ_USER}
+      - RABBITMQ_PASS: ${RABBITMQ_PASS}
+      - MONGO_URL_CONNECTION: ${MONGO_URL_CONNECTION}
+      - MONGO_DATABASE_NAME: ${MONGO_DATABASE_NAME}
+    networks:
+      - agrow-network
+    restart: unless-stopped
+    ports:
+      - "8084:80"
+    depends_on:
+      - rabbitmq
+      - mongodb
+  
+  microservice-agrow-drones-producer:
+    build:
+      context: ./code/agrow-drones-producer-api
+      dockerfile: Dockerfile
+    image: weslleylage/microservice-agrow-drones-producer
+    container_name: microservice-agrow-drones-producer
+    tty: true
+    environment:
+      - RABBITMQ_HOST: ${RABBITMQ_HOST}
+      - RABBITMQ_PORT: ${RABBITMQ_PORT}
+      - RABBITMQ_USER: ${RABBITMQ_USER}
+      - RABBITMQ_PASS: ${RABBITMQ_PASS}
+    networks:
+      - agrow-network
+    restart: unless-stopped
+    ports:
+      - "8085:80"
+    depends_on:
+      - rabbitmq
+  
+  microservice-agrow-lactacao-consumer:
+    build:
+      context: ./code/agrow-lactacao-consumer-api
+      dockerfile: Dockerfile
+    image: weslleylage/microservice-agrow-lactacao-consumer
+    container_name: microservice-agrow-lactacao-consumer
+    tty: true
+    environment:
+      - RABBITMQ_HOST: ${RABBITMQ_HOST}
+      - RABBITMQ_PORT: ${RABBITMQ_PORT}
+      - RABBITMQ_USER: ${RABBITMQ_USER}
+      - RABBITMQ_PASS: ${RABBITMQ_PASS}
+      - MONGO_URL_CONNECTION: ${MONGO_URL_CONNECTION}
+      - MONGO_DATABASE_NAME: ${MONGO_DATABASE_NAME}
+    networks:
+      - agrow-network
+    restart: unless-stopped
+    ports:
+      - "8086:80"
+    depends_on:
+      - rabbitmq
+      - mongodb
+
+  microservice-agrow-lactacao-producer:
+    build:
+      context: ./code/agrow-lactacao-producer-api
+      dockerfile: Dockerfile
+    image: weslleylage/microservice-agrow-lactacao-producer
+    container_name: microservice-agrow-lactacao-producer
+    tty: true
+    environment:
+      - RABBITMQ_HOST: ${RABBITMQ_HOST}
+      - RABBITMQ_PORT: ${RABBITMQ_PORT}
+      - RABBITMQ_USER: ${RABBITMQ_USER}
+      - RABBITMQ_PASS: ${RABBITMQ_PASS}
+    networks:
+      - agrow-network
+    restart: unless-stopped
+    ports:
+      - "8087:80"
+    depends_on:
+      - rabbitmq
+
+  pgadmin:
+    container_name: pgadmin
+    image: dpage/pgadmin4
+    environment:
+      PGADMIN_DEFAULT_EMAIL: ${PGADMIN_DEFAULT_EMAIL:-pgadmin4@pgadmin.org}
+      PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_DEFAULT_PASSWORD:-admin}
+      PGADMIN_CONFIG_SERVER_MODE: 'False'
+    ports:
+      - "5051:80"
+    networks:
+      - agrow-network
+    restart: unless-stopped
+    depends_on:
+      - postgresdb
+  
+  agroweb:
+    build:
+      context: ./code/agrow-web
+      dockerfile: Dockerfile
+    image: weslleylage/agrow-web
+    container_name: agrow-web
+    tty: true
+    environment:
+      - PG_URL_CONNECTION=${PG_URL_CONNECTION}
+      - PG_USER=${PG_USER}
+      - PG_PASS=${PG_PASS}
+    networks: 
+      - agrow-network
+    restart: unless-stopped
+    ports:
+      - "8080:80"
+    depends_on:
+      - microservice-agrow-compartilhamento
+      - microservice-agrow-drones-consumer
+      - microservice-agrow-lactacao-consumer
+      - microservice-agrow-colheita-consumer
+      - postgresdb
+
+networks:
+  agrow-network:
+    name: agrow-network
+    driver: bridge
