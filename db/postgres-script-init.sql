@@ -1,3 +1,6 @@
+SELECT 'CREATE DATABASE agrow'
+WHERE NOT EXISTS (SELECT FROM pg_database WHERE datname = 'agrow')\gexec
+
 -- Table: ROLE
 CREATE TABLE public.role
 (

@@ -24,26 +24,26 @@ Caso você já possua o docker e docker-compose instalado, pule o primeiro passo
 
 2. Crie um arquivo ***.env*** na raiz do projeto, com a estrutura de váriávies a seguir:
 ```docker
-MONGO_URL_CONNECTION=
+MONGO_URL_CONNECTION=mongodb://mongodb:27017
 MONGO_DATABASE_NAME=agrow
-MONGO_USER=
-MONGO_PASS=
+MONGO_USER=...
+MONGO_PASS=...
 
-PG_URL_CONNECTION=
-PG_USER=
-PG_PASS=
+PG_URL_CONNECTION=jdbc:postgresql://postgresdb:5432/agrow
+PG_USER=...
+PG_PASS=...
 PG_HOST_AUTH_METHOD=trust
 PG_DATA=/data/postgres
 
-RABBITMQ_HOST=localhost
+RABBITMQ_HOST=rabbitmq
 RABBITMQ_PORT=5672
-RABBITMQ_USER=guest
-RABBITMQ_PASS=guest
+RABBITMQ_USER=...
+RABBITMQ_PASS=...
 
-ENDPOINT_COMPARTILHAMENTO_API=http://localhost:8081
-ENDPOINT_DRONES_CONSUMER_API=http://localhost:8084
-ENDPOINT_LACTACAO_CONSUMER_API=http://localhost:8086
-ENDPOINT_COLHEITA_CONSUMER_API=http://localhost:8082
+ENDPOINT_COMPARTILHAMENTO_API=http://microservice-agrow-compartilhamento:8080
+ENDPOINT_DRONES_CONSUMER_API=http://microservice-agrow-drones-consumer:8080
+ENDPOINT_LACTACAO_CONSUMER_API=http://microservice-agrow-lactacao-consumer:8080
+ENDPOINT_COLHEITA_CONSUMER_API=http://microservice-agrow-colheita-consumer:8080
 ```
 3. Preencha as variáveis de conexão com os respectivos valores.
 4. Por fim, execute o projeto utilizando o docker-compose:

@@ -6,7 +6,6 @@ services:
     restart: always
     tty: true
     # volumes: 
-      # - ./db/mongo-script-init.js:/docker-entrypoint-initdb.d/mongo-script-init.js:ro
       # - /var/www/html/adm/database-servers/mongo:/data/db
     environment: 
       - MONGO_INITDB_ROOT_USERNAME:"${MONGO_USER}"
@@ -29,7 +28,7 @@ services:
       - PGDATA=${PG_DATA}
     volumes: 
     #   - /var/www/html/adm/database-servers/postgres/db:${PG_DATA}
-    # - ./db/postgres_script_init.sql:/docker-entrypoint-initdb.d/postgres-script-init.sql
+    - ./db/postgres-script-init.sql:/docker-entrypoint-initdb.d/postgres-script-init.sql
     networks:
       - agrow-network
     ports:
@@ -38,9 +37,6 @@ services:
   rabbitmq:
     image: "rabbitmq:3-management"
     container_name: rabbitmq-agrow
-    # environment:
-      # RABBITMQ_CONFIG_FILE: "${RABBITMQ_CONFIG_FILE}"
-      # RABBITMQ_ERLANG_COOKIE: "${RABBITMQ_ERLANG_COOKIE}"
     networks:
       - agrow-network
     restart: unless-stopped
@@ -56,13 +52,13 @@ services:
     container_name: microservice-agrow-compartilhamento
     tty: true
     environment:
-      - MONGO_URL_CONNECTION: ${MONGO_URL_CONNECTION}
-      - MONGO_DATABASE_NAME: ${MONGO_DATABASE_NAME}
+      - MONGO_URL_CONNECTION=${MONGO_URL_CONNECTION}
+      - MONGO_DATABASE_NAME=${MONGO_DATABASE_NAME}
     networks:
       - agrow-network
     restart: unless-stopped
     ports:
-      - "8081:80"
+      - "8081:8080"
     depends_on:
       - mongodb
 
@@ -74,21 +70,21 @@ services:
     container_name: microservice-agrow-colheita-consumer
     tty: true
     environment:
-      - RABBITMQ_HOST: ${RABBITMQ_HOST}
-      - RABBITMQ_PORT: ${RABBITMQ_PORT}
-      - RABBITMQ_USER: ${RABBITMQ_USER}
-      - RABBITMQ_PASS: ${RABBITMQ_PASS}
-      - MONGO_URL_CONNECTION: ${MONGO_URL_CONNECTION}
-      - MONGO_DATABASE_NAME: ${MONGO_DATABASE_NAME}
+      - RABBITMQ_HOST=${RABBITMQ_HOST}
+      - RABBITMQ_PORT=${RABBITMQ_PORT}
+      - RABBITMQ_USER=${RABBITMQ_USER}
+      - RABBITMQ_PASS=${RABBITMQ_PASS}
+      - MONGO_URL_CONNECTION=${MONGO_URL_CONNECTION}
+      - MONGO_DATABASE_NAME=${MONGO_DATABASE_NAME}
     networks:
       - agrow-network
     restart: unless-stopped
     ports:
-      - "8082:80"
+      - "8082:8080"
     depends_on:
       - rabbitmq
       - mongodb
-  
+
   microservice-agrow-colheita-producer:
     build:
       context: ./code/agrow-colheita-producer-api
@@ -97,18 +93,18 @@ services:
     container_name: microservice-agrow-colheita-producer
     tty: true
     environment:
-      - RABBITMQ_HOST: ${RABBITMQ_HOST}
-      - RABBITMQ_PORT: ${RABBITMQ_PORT}
-      - RABBITMQ_USER: ${RABBITMQ_USER}
-      - RABBITMQ_PASS: ${RABBITMQ_PASS}
+      - RABBITMQ_HOST=${RABBITMQ_HOST}
+      - RABBITMQ_PORT=${RABBITMQ_PORT}
+      - RABBITMQ_USER=${RABBITMQ_USER}
+      - RABBITMQ_PASS=${RABBITMQ_PASS}
     networks:
       - agrow-network
     restart: unless-stopped
     ports:
-      - "8083:80"
+      - "8083:8080"
     depends_on:
       - rabbitmq
-  
+
   microservice-agrow-drones-consumer:
     build:
       context: ./code/agrow-drones-consumer-api
@@ -117,17 +113,17 @@ services:
     container_name: microservice-agrow-drones-consumer
     tty: true
     environment:
-      - RABBITMQ_HOST: ${RABBITMQ_HOST}
-      - RABBITMQ_PORT: ${RABBITMQ_PORT}
-      - RABBITMQ_USER: ${RABBITMQ_USER}
-      - RABBITMQ_PASS: ${RABBITMQ_PASS}
-      - MONGO_URL_CONNECTION: ${MONGO_URL_CONNECTION}
-      - MONGO_DATABASE_NAME: ${MONGO_DATABASE_NAME}
+      - RABBITMQ_HOST=${RABBITMQ_HOST}
+      - RABBITMQ_PORT=${RABBITMQ_PORT}
+      - RABBITMQ_USER=${RABBITMQ_USER}
+      - RABBITMQ_PASS=${RABBITMQ_PASS}
+      - MONGO_URL_CONNECTION=${MONGO_URL_CONNECTION}
+      - MONGO_DATABASE_NAME=${MONGO_DATABASE_NAME}
     networks:
       - agrow-network
     restart: unless-stopped
     ports:
-      - "8084:80"
+      - "8084:8080"
     depends_on:
       - rabbitmq
       - mongodb
@@ -140,18 +136,18 @@ services:
     container_name: microservice-agrow-drones-producer
     tty: true
     environment:
-      - RABBITMQ_HOST: ${RABBITMQ_HOST}
-      - RABBITMQ_PORT: ${RABBITMQ_PORT}
-      - RABBITMQ_USER: ${RABBITMQ_USER}
-      - RABBITMQ_PASS: ${RABBITMQ_PASS}
+      - RABBITMQ_HOST=${RABBITMQ_HOST}
+      - RABBITMQ_PORT=${RABBITMQ_PORT}
+      - RABBITMQ_USER=${RABBITMQ_USER}
+      - RABBITMQ_PASS=${RABBITMQ_PASS}
     networks:
       - agrow-network
     restart: unless-stopped
     ports:
-      - "8085:80"
+      - "8085:8080"
     depends_on:
       - rabbitmq
-  
+
   microservice-agrow-lactacao-consumer:
     build:
       context: ./code/agrow-lactacao-consumer-api
@@ -160,17 +156,17 @@ services:
     container_name: microservice-agrow-lactacao-consumer
     tty: true
     environment:
-      - RABBITMQ_HOST: ${RABBITMQ_HOST}
-      - RABBITMQ_PORT: ${RABBITMQ_PORT}
-      - RABBITMQ_USER: ${RABBITMQ_USER}
-      - RABBITMQ_PASS: ${RABBITMQ_PASS}
-      - MONGO_URL_CONNECTION: ${MONGO_URL_CONNECTION}
-      - MONGO_DATABASE_NAME: ${MONGO_DATABASE_NAME}
+      - RABBITMQ_HOST=${RABBITMQ_HOST}
+      - RABBITMQ_PORT=${RABBITMQ_PORT}
+      - RABBITMQ_USER=${RABBITMQ_USER}
+      - RABBITMQ_PASS=${RABBITMQ_PASS}
+      - MONGO_URL_CONNECTION=${MONGO_URL_CONNECTION}
+      - MONGO_DATABASE_NAME=${MONGO_DATABASE_NAME}
     networks:
       - agrow-network
     restart: unless-stopped
     ports:
-      - "8086:80"
+      - "8086:8080"
     depends_on:
       - rabbitmq
       - mongodb
@@ -183,15 +179,15 @@ services:
     container_name: microservice-agrow-lactacao-producer
     tty: true
     environment:
-      - RABBITMQ_HOST: ${RABBITMQ_HOST}
-      - RABBITMQ_PORT: ${RABBITMQ_PORT}
-      - RABBITMQ_USER: ${RABBITMQ_USER}
-      - RABBITMQ_PASS: ${RABBITMQ_PASS}
+      - RABBITMQ_HOST=${RABBITMQ_HOST}
+      - RABBITMQ_PORT=${RABBITMQ_PORT}
+      - RABBITMQ_USER=${RABBITMQ_USER}
+      - RABBITMQ_PASS=${RABBITMQ_PASS}
     networks:
       - agrow-network
     restart: unless-stopped
     ports:
-      - "8087:80"
+      - "8087:8080"
     depends_on:
       - rabbitmq
 
@@ -221,11 +217,15 @@ services:
       - PG_URL_CONNECTION=${PG_URL_CONNECTION}
       - PG_USER=${PG_USER}
       - PG_PASS=${PG_PASS}
+      - ENDPOINT_COMPARTILHAMENTO_API=${ENDPOINT_COMPARTILHAMENTO_API}
+      - ENDPOINT_DRONES_CONSUMER_API=${ENDPOINT_DRONES_CONSUMER_API}
+      - ENDPOINT_LACTACAO_CONSUMER_API=${ENDPOINT_LACTACAO_CONSUMER_API}
+      - ENDPOINT_COLHEITA_CONSUMER_API=${ENDPOINT_COLHEITA_CONSUMER_API}
     networks: 
       - agrow-network
     restart: unless-stopped
     ports:
-      - "8080:80"
+      - "8080:8080"
     depends_on:
       - microservice-agrow-compartilhamento
       - microservice-agrow-drones-consumer
