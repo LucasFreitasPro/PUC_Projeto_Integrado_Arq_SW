@@ -2,6 +2,7 @@ package br.com.agrow.web.service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 import java.util.UUID;
 
 import javax.transaction.Transactional;
@@ -16,10 +17,12 @@ import br.com.agrow.web.repository.UserRepository;
 @Transactional
 public class UserService {
 
+	private final RoleService roleService;
 	private final UserRepository userRepository;
 	private final PasswordEncoder passwordEncoder;
 
-	public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder) {
+	public UserService(RoleService roleService, UserRepository userRepository, PasswordEncoder passwordEncoder) {
+		this.roleService = roleService;
 		this.userRepository = userRepository;
 		this.passwordEncoder = passwordEncoder;
 	}
@@ -40,6 +43,7 @@ public class UserService {
 		user.setPassword(this.passwordEncoder.encode(user.getPassword()));
 		user.setEnabled(Boolean.FALSE);
 		user.setEmailValidation(Boolean.FALSE);
+		user.setRoles(Set.of(this.roleService.findByRoleName("ADMIN").get()));
 		return save(user);
 	}
 
