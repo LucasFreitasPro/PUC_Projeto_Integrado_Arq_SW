@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import org.springframework.data.domain.Example;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -28,6 +29,12 @@ public class UnidadeAnimalService {
 
 	public Optional<UnidadeAnimal> findById(String idUnidadeAnimal) {
 		return this.repository.findById(idUnidadeAnimal);
+	}
+
+	public Optional<UnidadeAnimal> findByIdentificacao(String identificacao) {
+		UnidadeAnimal ua = new UnidadeAnimal();
+		ua.setIdentificacao(identificacao);
+		return this.repository.findOne(Example.of(ua));
 	}
 
 	public List<UnidadeAnimal> findAll() {
@@ -60,7 +67,7 @@ public class UnidadeAnimalService {
 	}
 
 	public void update(LactacaoUnidadeAnimalRegisteringRequest lactacaoUnidadeAnimalRegisteringRequest) {
-		UnidadeAnimal unidadeAnimal = findById(lactacaoUnidadeAnimalRegisteringRequest.getIdUnidadeAnimal()).orElseThrow(() -> new RuntimeException("Unidade Animal não encontrada"));
+		UnidadeAnimal unidadeAnimal = findByIdentificacao(lactacaoUnidadeAnimalRegisteringRequest.getIdentificacaoAnimal()).orElseThrow(() -> new RuntimeException("Unidade Animal não encontrada"));
 		if (unidadeAnimal.getLactacoes() == null) {
 			unidadeAnimal.setLactacoes(new ArrayList<LactacaoUnidadeAnimal>());
 		}

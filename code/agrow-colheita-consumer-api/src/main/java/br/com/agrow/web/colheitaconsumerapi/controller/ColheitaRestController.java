@@ -25,7 +25,7 @@ public class ColheitaRestController {
 	}
 
 	@GetMapping("/por-talhao/{anoMes}")
-	public ColheitaTalhaoResponse curvaDeLactacao(@PathVariable("anoMes") String anoMes) {
+	public ColheitaTalhaoResponse colheitaPorTalhao(@PathVariable("anoMes") String anoMes) {
 		Date anoMesDate = null;
 		try {
 			anoMesDate = sdfAnoMes.parse(anoMes);

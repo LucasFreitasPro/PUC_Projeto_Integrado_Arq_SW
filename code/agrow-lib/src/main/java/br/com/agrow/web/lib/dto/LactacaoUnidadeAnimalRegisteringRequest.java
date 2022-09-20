@@ -1,19 +1,22 @@
 package br.com.agrow.web.lib.dto;
 
+import java.io.Serializable;
 import java.time.LocalDate;
 
-public class LactacaoUnidadeAnimalRegisteringRequest {
+public class LactacaoUnidadeAnimalRegisteringRequest implements Serializable {
 
-	private String idUnidadeAnimal;
+	private static final long serialVersionUID = 1L;
+	
+	private String identificacaoAnimal;
 	private LocalDate dataProducao;
 	private Integer producao;
 
-	public String getIdUnidadeAnimal() {
-		return idUnidadeAnimal;
+	public String getIdentificacaoAnimal() {
+		return identificacaoAnimal;
 	}
 
-	public void setIdUnidadeAnimal(String idUnidadeAnimal) {
-		this.idUnidadeAnimal = idUnidadeAnimal;
+	public void setIdentificacaoAnimal(String identificacaoAnimal) {
+		this.identificacaoAnimal = identificacaoAnimal;
 	}
 
 	public LocalDate getDataProducao() {
@@ -34,6 +37,6 @@ public class LactacaoUnidadeAnimalRegisteringRequest {
 
 	@Override
 	public String toString() {
-		return "LactacaoUnidadeAnimalRegisteringRequest [idUnidadeAnimal=" + idUnidadeAnimal + ", dataProducao=" + dataProducao + ", producao=" + producao + "]";
+		return "LactacaoUnidadeAnimalRegisteringRequest [identificacaoAnimal=" + identificacaoAnimal + ", dataProducao=" + dataProducao + ", producao=" + producao + "]";
 	}
 }
