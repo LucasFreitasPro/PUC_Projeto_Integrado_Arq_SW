@@ -4,7 +4,7 @@ import org.springframework.amqp.core.FanoutExchange;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.stereotype.Component;
 
-import br.com.agrow.web.lib.dto.DronesSoloRegisteringRequest;
+import br.com.agrow.web.lib.dto.ColheitaTalhaoRegisteringRequest;
 
 @Component
 public class ColheitaProducer {
@@ -18,7 +18,7 @@ public class ColheitaProducer {
 		this.fanoutExchange = fanoutExchange;
 	}
 
-	public void send(DronesSoloRegisteringRequest dronesSoloRegisteringRequest) {
-		this.rabbitTemplate.convertAndSend(this.fanoutExchange.getName(), "", dronesSoloRegisteringRequest);
+	public void send(ColheitaTalhaoRegisteringRequest colheitaTalhaoRegisteringRequest) {
+		this.rabbitTemplate.convertAndSend(this.fanoutExchange.getName(), "", colheitaTalhaoRegisteringRequest);
 	}
 }

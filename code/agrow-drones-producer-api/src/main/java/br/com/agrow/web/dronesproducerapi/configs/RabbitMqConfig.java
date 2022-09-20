@@ -9,8 +9,10 @@ import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.scheduling.annotation.EnableScheduling;
 
 @Configuration
+@EnableScheduling
 public class RabbitMqConfig {
 
 	@Value("${spring.rabbitmq.host}")
@@ -35,12 +37,12 @@ public class RabbitMqConfig {
 	}
 
 	@Bean
-	public Queue lactacaoUnidadeAnimalDbQueue() {
+	public Queue dronesSoloDbQueue() {
 		return new Queue("agrow.drones.solo", true);
 	}
 
 	@Bean
-	public Binding binding(Queue lactacaoUnidadeAnimalDbQueue, FanoutExchange fanout) {
-		return BindingBuilder.bind(lactacaoUnidadeAnimalDbQueue).to(fanout);
+	public Binding binding(Queue dronesSoloDbQueue, FanoutExchange fanout) {
+		return BindingBuilder.bind(dronesSoloDbQueue).to(fanout);
 	}
 }
