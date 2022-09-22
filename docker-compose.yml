@@ -97,6 +97,7 @@ services:
       - RABBITMQ_PORT=${RABBITMQ_PORT}
       - RABBITMQ_USER=${RABBITMQ_USER}
       - RABBITMQ_PASS=${RABBITMQ_PASS}
+      - COLHEITA_SCHEDULER_DELAY_MINUTES=${COLHEITA_SCHEDULER_DELAY_MINUTES}
     networks:
       - agrow-network
     restart: unless-stopped
@@ -140,6 +141,7 @@ services:
       - RABBITMQ_PORT=${RABBITMQ_PORT}
       - RABBITMQ_USER=${RABBITMQ_USER}
       - RABBITMQ_PASS=${RABBITMQ_PASS}
+      - DRONES_SOLO_SCHEDULER_DELAY_MINUTES=${DRONES_SOLO_SCHEDULER_DELAY_MINUTES}
     networks:
       - agrow-network
     restart: unless-stopped
@@ -183,6 +185,7 @@ services:
       - RABBITMQ_PORT=${RABBITMQ_PORT}
       - RABBITMQ_USER=${RABBITMQ_USER}
       - RABBITMQ_PASS=${RABBITMQ_PASS}
+      - LACTACAO_SCHEDULER_DELAY_MINUTES=${LACTACAO_SCHEDULER_DELAY_MINUTES}
     networks:
       - agrow-network
     restart: unless-stopped
