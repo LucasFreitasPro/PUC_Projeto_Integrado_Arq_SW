@@ -1,4 +1,4 @@
-# ADR-3: Persistência com banco NoSQL
+# ADR-3: Persistência com bancos NoSQL
 
 ## Status
 
